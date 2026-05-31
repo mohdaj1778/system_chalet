@@ -61,15 +61,14 @@ with tab1:
 
 # --- القسم الثاني: شاشة عرض صاحب الشاليه ---
 with tab2:
-    st.header("🔍 جدول الحجوزات والمالية")
-    st.info("هذه الشاشة تظهر لمتابعة الأيام والساعات والمبالغ.")
+    st.header("🔍 الأيام والساعات المحجوزة")
+    st.info("هذه الشاشة تظهر لصاحب الشاليه لمتابعة التواريخ والأوقات المحجوزة فقط.")
     
     if df_bookings.empty:
         st.warning("لا توجد حجوزات مسجلة حالياً.")
     else:
-        # عرض البيانات على شكل جدول منظم
-        st.dataframe(df_bookings, use_container_width=True)
+        # قمنا بفلترة الجدول ليعرض فقط الأعمدة المحددة (التاريخ والأوقات) وإخفاء الباقي
+        df_owner_view = df_bookings[["التاريخ", "من الساعة", "إلى الساعة"]]
         
-        # حساب مجموع الأموال تلقائياً
-        total_money = df_bookings["المبلغ المستلم"].astype(float).sum()
-        st.metric(label="💰 إجمالي الإيرادات المسجلة", value=f"{total_money} دينار")
+        # عرض الجدول المفلتر لصاحب الشاليه
+        st.dataframe(df_owner_view, use_container_width=True)
